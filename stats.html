@@ -96,7 +96,7 @@ var DATA = [{"who": "Andrew", "date": "2024-11-24", "tourn": "2024新北五人�
     options:{maintainAspectRatio:false, interaction:{mode:'index',intersect:false},
       plugins:{legend:{labels:{boxWidth:12}}, tooltip:{callbacks:{title:function(it){return it[0].label;}}}},
       scales:{x:{grid:grid, ticks:Object.assign({maxTicksLimit:8},tick)},
-              y:{grid:grid, ticks:tick, beginAtZero:true, title:{display:true,text:'累積進球數',color:'#8b949e'}}}}
+              y:{grid:grid, ticks:Object.assign({precision:0},tick), beginAtZero:true, title:{display:true,text:'累積進球數',color:'#8b949e'}}}}
   });
 
   // ② 進球時間分布
@@ -119,7 +119,7 @@ var DATA = [{"who": "Andrew", "date": "2024-11-24", "tourn": "2024新北五人�
       {label:'Andrew', data:hist('Andrew'), backgroundColor:CH.Andrew}
     ]},
     options:{maintainAspectRatio:false, plugins:{legend:{labels:{boxWidth:12}}},
-      scales:{x:{grid:grid, ticks:tick}, y:{grid:grid, ticks:tick, beginAtZero:true, title:{display:true,text:'進球數',color:'#8b949e'}}}}
+      scales:{x:{grid:grid, ticks:tick}, y:{grid:grid, ticks:Object.assign({precision:0},tick), beginAtZero:true, title:{display:true,text:'進球數',color:'#8b949e'}}}}
   });
 
   // ③ 各賽事場次
@@ -140,7 +140,7 @@ var DATA = [{"who": "Andrew", "date": "2024-11-24", "tourn": "2024新北五人�
     ]},
     options:{indexAxis:'y', maintainAspectRatio:false, plugins:{legend:{labels:{boxWidth:12}},
       tooltip:{callbacks:{title:function(it){return tkeys[it[0].dataIndex];}}}},
-      scales:{x:{grid:grid, ticks:tick, beginAtZero:true, ticks:tick}, y:{grid:grid, ticks:Object.assign({font:{size:10}},tick)}}}
+      scales:{x:{grid:grid, ticks:Object.assign({precision:0},tick), beginAtZero:true}, y:{grid:grid, ticks:Object.assign({font:{size:10}},tick)}}}
   });
 
   // ④ 每球季進球
@@ -155,7 +155,7 @@ var DATA = [{"who": "Andrew", "date": "2024-11-24", "tourn": "2024新北五人�
       {label:'Andrew', data:skeys.map(function(k){return sA[k]||0;}), backgroundColor:CH.Andrew}
     ]},
     options:{maintainAspectRatio:false, plugins:{legend:{labels:{boxWidth:12}}},
-      scales:{x:{grid:grid, ticks:tick}, y:{grid:grid, ticks:tick, beginAtZero:true, title:{display:true,text:'進球數',color:'#8b949e'}}}}
+      scales:{x:{grid:grid, ticks:tick}, y:{grid:grid, ticks:Object.assign({precision:0},tick), beginAtZero:true, title:{display:true,text:'進球數',color:'#8b949e'}}}}
   });
 
   document.getElementById('caveat').innerHTML =
