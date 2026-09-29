@@ -45,7 +45,24 @@ details{margin:8px 0}summary{cursor:pointer;color:#8b949e;font-size:13px}
 @media(min-width:900px){.grid{grid-template-columns:repeat(4,1fr)}}
 .grid img{width:100%;aspect-ratio:1/1;object-fit:cover;border-radius:8px;display:block;background:#161b22}
 footer{padding:24px 18px;color:#6e7681;font-size:12px;text-align:center;border-top:1px solid #21262d}
+#gate{position:fixed;inset:0;background:#0d1117;display:flex;align-items:center;justify-content:center;z-index:99;padding:20px}
+#gate .card{background:#161b22;border:1px solid #30363d;border-radius:14px;padding:26px 22px;max-width:340px;width:100%;text-align:center}
+#gate .ico{font-size:30px}
+#gate h2{margin:8px 0 4px;font-size:18px}
+#gate p{color:#8b949e;font-size:13px;margin:4px 0 12px}
+#gate input{width:100%;background:#0d1117;border:1px solid #30363d;color:#e6edf3;border-radius:8px;padding:11px 12px;font-size:17px;text-align:center;letter-spacing:6px}
+#gate button{width:100%;margin-top:10px;background:#238636;border:0;color:#fff;font-size:15px;font-weight:700;padding:11px;border-radius:8px;cursor:pointer}
+#err{color:#f85149;min-height:20px;margin-top:8px}
 </style></head><body>
+<div id="gate"><div class="card">
+  <div class="ico">🔒</div>
+  <h2>兩兄弟足球成果</h2>
+  <p>請輸入密碼</p>
+  <input id="pw" type="password" inputmode="numeric" autocomplete="off" placeholder="••••">
+  <button id="go">進入</button>
+  <p id="err"></p>
+</div></div>
+<div id="site" hidden>
 <header><h1>⚽ 兩兄弟足球成果</h1><p>Edward:13 場 / 15 球 / 251 張照片 / 4 支精華　·　Andrew:10 場 / 16 球 / 148 張照片 / 7 支精華</p></header>
 <nav class="top"><a href="#toc">📑 目錄</a><a href="#edward">Edward</a><a href="#andrew">Andrew</a></nav>
 <main>
@@ -290,5 +307,26 @@ footer{padding:24px 18px;color:#6e7681;font-size:12px;text-align:center;border-t
 const q=document.getElementById('q');
 q.addEventListener('input',()=>{const v=q.value.trim().toLowerCase();
 document.querySelectorAll('.toclist li').forEach(li=>{li.style.display=(!v||li.dataset.k.includes(v))?'':'none';});});
+</script>
+</div>
+<script>
+(function(){
+  var H="b6c76afc9374390004c2998480613a0fd5d17f12554d529589e8869e2988d047", site=document.getElementById('site'), gate=document.getElementById('gate');
+  function hex(b){return Array.prototype.map.call(new Uint8Array(b),function(x){return ('00'+x.toString(16)).slice(-2);}).join('');}
+  function show(){gate.style.display='none';site.hidden=false;}
+  async function go(){
+    var v=document.getElementById('pw').value, err=document.getElementById('err');
+    if(!v){err.textContent='請輸入密碼';return;}
+    try{
+      var d=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(v));
+      if(hex(d)===H){try{sessionStorage.setItem('fpgate','1');}catch(e){} show();}
+      else{err.textContent='密碼錯誤，請再試一次';document.getElementById('pw').value='';}
+    }catch(e){err.textContent='此瀏覽器不支援，請改用 Chrome/Safari 開啟';}
+  }
+  try{if(sessionStorage.getItem('fpgate')==='1') show();}catch(e){}
+  document.getElementById('go').addEventListener('click',go);
+  document.getElementById('pw').addEventListener('keydown',function(e){if(e.key==='Enter')go();});
+  document.getElementById('pw').focus();
+})();
 </script>
 </body></html>
