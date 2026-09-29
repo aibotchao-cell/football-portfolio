@@ -34,7 +34,7 @@ footer{padding:22px 18px;color:#6e7681;font-size:12px;text-align:center;border-t
 <button id="go">進入</button><p id="err"></p></div></div>
 <div id="site" hidden>
 <header><h1>📊 數據統計</h1><p>資料範圍 2024-11-24 ~ 2026-09-20　·　共 23 場有進球紀錄　·　更新後自動重算</p></header>
-<nav class="top"><a href="index.html">📑 比賽成果</a><a href="#c1">累積進球</a><a href="#c2">進球時間</a><a href="#c3">賽事場次</a><a href="#c4">每季進球</a></nav>
+<nav class="top"><a href="index.html">📑 比賽成果</a><a href="#c1">累積進球</a><a href="#c2">進球時間</a><a href="#c3">每季進球</a><a href="#c4">賽事場次</a></nav>
 <main>
 <div class="summary">
   <div class="kpi"><b>31</b><span>總進球數</span></div>
@@ -51,12 +51,12 @@ footer{padding:22px 18px;color:#6e7681;font-size:12px;text-align:center;border-t
 <p>以「開球後第幾分鐘」統計,每 10 分鐘一格。</p>
 <div class="wrap"><canvas id="ch2"></canvas></div></div>
 
-<div class="card" id="c3"><h3>③ 各賽事場次</h3>
-<p>依賽事分組的比賽場次(含兩人分別的場次)。</p>
+<div class="card" id="c3"><h3>③ 每球季進球數</h3>
+<p>球季以 9 月為界(例:2025-26 球季 = 2025/9 ~ 2026/8)。</p>
 <div class="wrap"><canvas id="ch3"></canvas></div></div>
 
-<div class="card" id="c4"><h3>④ 每球季進球數</h3>
-<p>球季以 9 月為界(例:2025-26 球季 = 2025/9 ~ 2026/8)。</p>
+<div class="card" id="c4"><h3>④ 各賽事場次</h3>
+<p>依賽事分組的比賽場次(含兩人分別的場次)。</p>
 <div class="wrap"><canvas id="ch4"></canvas></div></div>
 
 <div class="note" id="caveat"></div>
@@ -100,10 +100,10 @@ var DATA = [{"who": "Andrew", "date": "2024-11-24", "tourn": "2024新北五人�
   });
 
   // ② 進球時間分布
-  var buckets = [[0,10],[10,20],[20,30],[30,40],[40,999]];
-  var labels = ['0-9 分','10-19 分','20-29 分','30-39 分','40 分以上'];
+  var buckets = [[0,5],[5,10],[10,15],[15,20],[20,25],[25,30],[30,35],[35,40],[40,9999]];
+  var labels = ['0-4','5-9','10-14','15-19','20-24','25-29','30-34','35-39','40+'];
   function hist(who){
-    var a=[0,0,0,0,0];
+    var a=buckets.map(function(){return 0;});
     DATA.filter(function(m){return m.who===who;}).forEach(function(m){
       m.goals.forEach(function(g){
         var mn = g[1]/60;
@@ -113,13 +113,15 @@ var DATA = [{"who": "Andrew", "date": "2024-11-24", "tourn": "2024新北五人�
     return a;
   }
   new Chart(document.getElementById('ch2'), {
-    type:'bar',
+    type:'line',
     data:{labels:labels, datasets:[
-      {label:'Edward', data:hist('Edward'), backgroundColor:CH.Edward},
-      {label:'Andrew', data:hist('Andrew'), backgroundColor:CH.Andrew}
+      {label:'Edward', data:hist('Edward'), borderColor:CH.Edward, backgroundColor:CH.Edward+'22', tension:.35, fill:true, pointRadius:3},
+      {label:'Andrew', data:hist('Andrew'), borderColor:CH.Andrew, backgroundColor:CH.Andrew+'22', tension:.35, fill:true, pointRadius:3}
     ]},
-    options:{maintainAspectRatio:false, plugins:{legend:{labels:{boxWidth:12}}},
-      scales:{x:{grid:grid, ticks:tick}, y:{grid:grid, ticks:Object.assign({precision:0},tick), beginAtZero:true, title:{display:true,text:'進球數',color:'#8b949e'}}}}
+    options:{maintainAspectRatio:false, interaction:{mode:'index',intersect:false},
+      plugins:{legend:{labels:{boxWidth:12}}, tooltip:{callbacks:{title:function(it){return '第 '+it[0].label+(it[0].label==='40+'?'':' 分鐘');}}}},
+      scales:{x:{grid:grid, ticks:tick, title:{display:true,text:'開球後分鐘',color:'#8b949e'}},
+              y:{grid:grid, ticks:Object.assign({precision:0},tick), beginAtZero:true, title:{display:true,text:'進球數',color:'#8b949e'}}}}
   });
 
   // ③ 各賽事場次
@@ -132,7 +134,7 @@ var DATA = [{"who": "Andrew", "date": "2024-11-24", "tourn": "2024新北五人�
   var tkeys = Array.from(new Set(Object.keys(tE).concat(Object.keys(tA))));
   tkeys.sort(function(a,b){ return ((tE[b]||0)+(tA[b]||0)) - ((tE[a]||0)+(tA[a]||0)); });
   tkeys = tkeys.slice(0,8);
-  new Chart(document.getElementById('ch3'), {
+  new Chart(document.getElementById('ch4'), {
     type:'bar',
     data:{labels:tkeys.map(function(k){return k.length>16?k.slice(0,16)+'…':k;}), datasets:[
       {label:'Edward', data:tkeys.map(function(k){return tE[k]||0;}), backgroundColor:CH.Edward},
@@ -148,13 +150,14 @@ var DATA = [{"who": "Andrew", "date": "2024-11-24", "tourn": "2024新北五人�
   var sE={}, sA={};
   DATA.forEach(function(m){ var k=season(m.date); if(m.who==='Edward') sE[k]=(sE[k]||0)+m.n; else sA[k]=(sA[k]||0)+m.n; });
   var skeys = Array.from(new Set(Object.keys(sE).concat(Object.keys(sA)))).sort();
-  new Chart(document.getElementById('ch4'), {
-    type:'bar',
+  new Chart(document.getElementById('ch3'), {
+    type:'line',
     data:{labels:skeys.map(function(k){return k+' 球季';}), datasets:[
-      {label:'Edward', data:skeys.map(function(k){return sE[k]||0;}), backgroundColor:CH.Edward},
-      {label:'Andrew', data:skeys.map(function(k){return sA[k]||0;}), backgroundColor:CH.Andrew}
+      {label:'Edward', data:skeys.map(function(k){return sE[k]||0;}), borderColor:CH.Edward, backgroundColor:CH.Edward+'22', tension:.35, fill:true, pointRadius:4},
+      {label:'Andrew', data:skeys.map(function(k){return sA[k]||0;}), borderColor:CH.Andrew, backgroundColor:CH.Andrew+'22', tension:.35, fill:true, pointRadius:4}
     ]},
-    options:{maintainAspectRatio:false, plugins:{legend:{labels:{boxWidth:12}}},
+    options:{maintainAspectRatio:false, interaction:{mode:'index',intersect:false},
+      plugins:{legend:{labels:{boxWidth:12}}},
       scales:{x:{grid:grid, ticks:tick}, y:{grid:grid, ticks:Object.assign({precision:0},tick), beginAtZero:true, title:{display:true,text:'進球數',color:'#8b949e'}}}}
   });
 
