@@ -1,0 +1,187 @@
+<!DOCTYPE html><html lang="zh-Hant"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>數據統計 | 兩兄弟足球成果</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#0d1117;color:#e6edf3;font-family:-apple-system,"Segoe UI","Microsoft JhengHei",sans-serif;line-height:1.6}
+header{padding:22px 18px 14px;background:linear-gradient(135deg,#1f6feb22,#3fb95022);border-bottom:1px solid #21262d}
+header h1{margin:0 0 6px;font-size:23px}header p{margin:0;color:#8b949e;font-size:13px}
+nav.top{display:flex;gap:8px;padding:10px 18px;border-bottom:1px solid #21262d;position:sticky;top:0;background:#0d1117f2;backdrop-filter:blur(6px);z-index:20;overflow-x:auto}
+nav.top a{color:#58a6ff;text-decoration:none;font-size:13px;border:1px solid #30363d;padding:4px 10px;border-radius:999px;white-space:nowrap}
+main{max-width:1000px;margin:0 auto;padding:0 18px 40px}
+.summary{display:flex;gap:10px;flex-wrap:wrap;margin:18px 0 6px}
+.kpi{flex:1 1 130px;background:#0f141b;border:1px solid #21262d;border-radius:12px;padding:12px}
+.kpi b{display:block;font-size:24px;color:#3fb950}
+.kpi span{font-size:12px;color:#8b949e}
+.card{background:#0f141b;border:1px solid #21262d;border-radius:12px;padding:14px 16px 6px;margin:14px 0}
+.card h3{margin:0 0 4px;font-size:15px}
+.card p{margin:0 0 10px;font-size:12px;color:#8b949e}
+.wrap{position:relative;height:300px}
+@media(max-width:520px){.wrap{height:250px}}
+.note{margin:22px 0;padding:12px 14px;border-left:3px solid #d29922;background:#1b1a12;border-radius:8px;font-size:12px;color:#c9d1d9}
+footer{padding:22px 18px;color:#6e7681;font-size:12px;text-align:center;border-top:1px solid #21262d}
+#gate{position:fixed;inset:0;background:#0d1117;display:flex;align-items:center;justify-content:center;z-index:99;padding:20px}
+#gate .c{background:#161b22;border:1px solid #30363d;border-radius:14px;padding:26px 22px;max-width:340px;width:100%;text-align:center}
+#gate .ico{font-size:30px}#gate h2{margin:8px 0 4px;font-size:18px}
+#gate p{color:#8b949e;font-size:13px;margin:4px 0 12px}
+#gate input{width:100%;background:#0d1117;border:1px solid #30363d;color:#e6edf3;border-radius:8px;padding:11px 12px;font-size:17px;text-align:center;letter-spacing:6px}
+#gate button{width:100%;margin-top:10px;background:#238636;border:0;color:#fff;font-size:15px;font-weight:700;padding:11px;border-radius:8px;cursor:pointer}
+#err{color:#f85149;min-height:20px;margin-top:8px}
+</style></head><body>
+<div id="gate"><div class="c"><div class="ico">🔒</div><h2>兩兄弟足球成果</h2>
+<p>請輸入密碼</p><input id="pw" type="password" inputmode="numeric" autocomplete="off" placeholder="••••">
+<button id="go">進入</button><p id="err"></p></div></div>
+<div id="site" hidden>
+<header><h1>📊 數據統計</h1><p>資料範圍 2024-11-24 ~ 2026-09-20　·　共 23 場有進球紀錄　·　更新後自動重算</p></header>
+<nav class="top"><a href="index.html">📑 比賽成果</a><a href="#c1">累積進球</a><a href="#c2">進球時間</a><a href="#c3">賽事場次</a><a href="#c4">每季進球</a></nav>
+<main>
+<div class="summary">
+  <div class="kpi"><b>31</b><span>總進球數</span></div>
+  <div class="kpi"><b>15</b><span>Edward（#72）</span></div>
+  <div class="kpi"><b>16</b><span>Andrew（#97）</span></div>
+  <div class="kpi"><b>23</b><span>有進球的場次</span></div>
+</div>
+
+<div class="card" id="c1"><h3>① 累積進球數 vs 時間</h3>
+<p>兩條線可分別開關(點下方圖例)。滑鼠移到線上可看當日進球與累積數。</p>
+<div class="wrap"><canvas id="ch1"></canvas></div></div>
+
+<div class="card" id="c2"><h3>② 進球時間分布</h3>
+<p>以「開球後第幾分鐘」統計,每 10 分鐘一格。</p>
+<div class="wrap"><canvas id="ch2"></canvas></div></div>
+
+<div class="card" id="c3"><h3>③ 各賽事場次</h3>
+<p>依賽事分組的比賽場次(含兩人分別的場次)。</p>
+<div class="wrap"><canvas id="ch3"></canvas></div></div>
+
+<div class="card" id="c4"><h3>④ 每球季進球數</h3>
+<p>球季以 9 月為界(例:2025-26 球季 = 2025/9 ~ 2026/8)。</p>
+<div class="wrap"><canvas id="ch4"></canvas></div></div>
+
+<div class="note" id="caveat"></div>
+</main>
+<footer>資料來源:俱樂部 YouTube 頻道錄影描述(進球時間軸)+ 相簿<br>
+圖表可互動:點圖例開關、滑過看數值。</footer>
+</div>
+<script>
+var DATA = [{"who": "Andrew", "date": "2024-11-24", "tourn": "2024新北五人冬季U8_LS", "team": "紅獅", "opp": "銀河射手", "score": "2:2", "n": 1, "num": "97", "goals": [["9:55", 595]]}, {"who": "Edward", "date": "2025-03-21", "tourn": "2025新北八人春季-U10_LS", "team": "紅豹", "opp": "SLFC", "score": "6:0", "n": 1, "num": "72", "goals": [["10:13", 613]]}, {"who": "Andrew", "date": "2025-03-22", "tourn": "2025新北五人春季-U8_LS", "team": "紅獅", "opp": "PLCFA", "score": "6:2", "n": 3, "num": "97", "goals": [["12:46", 766], ["14:33", 873], ["37:42", 2262]]}, {"who": "Edward", "date": "2025-04-12", "tourn": "2025少年盃U10_LS", "team": "紅豹", "opp": "MFA", "score": "10:0", "n": 2, "num": "72", "goals": [["21:34", 1294], ["23:40", 1420]]}, {"who": "Edward", "date": "2025-09-06", "tourn": "2025AIA盃全國總決賽U10季軍賽_LS", "team": "紅豹", "opp": "EsperzoFCU10", "score": "4:1", "n": 1, "num": "72", "goals": [["28:08", 1688]]}, {"who": "Edward", "date": "2025-10-18", "tourn": "2025全國學童盃北區U11_八強_LS", "team": "紅鯨", "opp": "熱血寂鋒", "score": "4:1", "n": 1, "num": "72", "goals": [["13:02", 782]]}, {"who": "Edward", "date": "2025-11-08", "tourn": "2025全國俱樂部聯合錦標賽U10分1循環賽-LS", "team": "", "opp": "基隆獵鷹", "score": "", "n": 1, "num": "72", "goals": [["13:46", 826]]}, {"who": "Edward", "date": "2025-11-21", "tourn": "2025全國學童盃總決賽U11  LS", "team": "紅鯨", "opp": "秀林FC", "score": "4:1", "n": 2, "num": "72", "goals": [["21:34", 1294], ["29:16", 1756]]}, {"who": "Edward", "date": "2026-01-31", "tourn": "2026金馬賀歲盃U12組_LS", "team": "紅鯨", "opp": "SACT U12", "score": "4:1", "n": 1, "num": "72", "goals": [["12:12", 732]]}, {"who": "Edward", "date": "2026-03-07", "tourn": "2026新北八人U12組_LS", "team": "紅鯨", "opp": "Esperzo FC U12", "score": "5:2", "n": 1, "num": "72", "goals": [["12:42", 762]]}, {"who": "Andrew", "date": "2026-04-19", "tourn": "2026新北八人U10組_LS", "team": "紅豹", "opp": "海山國小U10", "score": "3:2", "n": 1, "num": "97", "goals": [["27:07", 1627]]}, {"who": "Andrew", "date": "2026-05-02", "tourn": "2026台北五人U10組_LS", "team": "紅豹", "opp": "士東勁風", "score": "9:0", "n": 1, "num": "97", "goals": [["30:22", 1822]]}, {"who": "Andrew", "date": "2026-05-09", "tourn": "2026台北五人U10組_LS", "team": "紅豹", "opp": "公館極光", "score": "7:0", "n": 1, "num": "97", "goals": [["31:53", 1913]]}, {"who": "Edward", "date": "2026-08-02", "tourn": "Formosa7s國際足球錦標賽U11_LS", "team": "紅鯨", "opp": "屏市FC", "score": "9:0", "n": 1, "num": "72", "goals": [["10:08", 608]]}, {"who": "Andrew", "date": "2026-08-05", "tourn": "Formosa7S-U9_LS", "team": "紅獅", "opp": "足夢東海U9", "score": "4:0", "n": 3, "num": "97", "goals": [["15:33", 933], ["16:27", 987], ["19:10", 1150]]}, {"who": "Andrew", "date": "2026-08-09", "tourn": "Formosa7S-U9_LS", "team": "紅獅", "opp": "皇家野馬 U9", "score": "8:1", "n": 1, "num": "97", "goals": [["17:54", 1074]]}, {"who": "Andrew", "date": "2026-08-09", "tourn": "Formosa7S-U9_LS", "team": "紅獅", "opp": "小雷鳥 U9", "score": "2:1", "n": 1, "num": "97", "goals": [["23:06", 1386]]}, {"who": "Edward", "date": "2026-08-15", "tourn": "2026AIA中區預賽-U11_LS", "team": "紅鯨", "opp": "快樂聯隊", "score": "1:1", "n": 1, "num": "72", "goals": [["15:51", 951]]}, {"who": "Andrew", "date": "2026-08-21", "tourn": "第八屆板橋盃-U10_LS", "team": "紅豹", "opp": "新北銀河", "score": "3:2", "n": 3, "num": "97", "goals": [["4:25", 265], ["30:22", 1822], ["32:22", 1942]]}, {"who": "Edward", "date": "2026-08-21", "tourn": "第八屆板橋盃-U12_LS", "team": "紅鷹", "opp": "DELANTERO", "score": "2:0", "n": 1, "num": "72", "goals": [["2:14", 134]]}, {"who": "Edward", "date": "2026-09-12", "tourn": "新北八人_LS", "team": "紅鷹", "opp": "MFA U12 White", "score": "2:1", "n": 1, "num": "72", "goals": [["19:26", 1166]]}, {"who": "Andrew", "date": "2026-09-13", "tourn": "新北八人_LS", "team": "紅豹", "opp": "熱血勁球", "score": "1:3", "n": 1, "num": "97", "goals": [["28:03", 1683]]}, {"who": "Edward", "date": "2026-09-20", "tourn": "勝利聯賽_LS", "team": "紅鷹", "opp": "Flying Tigerss fc", "score": "12:0", "n": 1, "num": "72", "goals": [["11:58", 718]]}];
+(function(){
+  var CH = {"Edward":"#58a6ff","Andrew":"#d29922"};
+  var grid = {color:"#21262d"}, tick = {color:"#8b949e",font:{size:11}};
+  Chart.defaults.color = "#8b949e";
+  Chart.defaults.font.family = '-apple-system,"Segoe UI","Microsoft JhengHei",sans-serif';
+
+  // ---- 共用:日期序列 ----
+  var dates = Array.from(new Set(DATA.map(function(m){return m.date;}))).sort();
+  function cumSeries(who){
+    var pts = DATA.filter(function(m){return m.who===who;});
+    var c=0, out=[], byDate={};
+    pts.forEach(function(m){ byDate[m.date]=(byDate[m.date]||0)+m.n; });
+    dates.forEach(function(d){ c += (byDate[d]||0); out.push(c); });
+    return out;
+  }
+  var byMatch = {};
+  DATA.forEach(function(m){ byMatch[m.date]=(byMatch[m.date]||0)+m.n; });
+  var cumAll=[], c=0; dates.forEach(function(d){ c+=(byMatch[d]||0); cumAll.push(c); });
+
+  // ① 累積進球
+  new Chart(document.getElementById('ch1'), {
+    type:'line',
+    data:{ labels:dates, datasets:[
+      {label:'Edward 累積', data:cumSeries('Edward'), borderColor:CH.Edward, backgroundColor:CH.Edward+'22', tension:.25, fill:true, pointRadius:3},
+      {label:'Andrew 累積', data:cumSeries('Andrew'), borderColor:CH.Andrew, backgroundColor:CH.Andrew+'22', tension:.25, fill:true, pointRadius:3},
+      {label:'合計', data:cumAll, borderColor:'#3fb950', borderDash:[6,4], tension:.25, pointRadius:0}
+    ]},
+    options:{maintainAspectRatio:false, interaction:{mode:'index',intersect:false},
+      plugins:{legend:{labels:{boxWidth:12}}, tooltip:{callbacks:{title:function(it){return it[0].label;}}}},
+      scales:{x:{grid:grid, ticks:Object.assign({maxTicksLimit:8},tick)},
+              y:{grid:grid, ticks:tick, beginAtZero:true, title:{display:true,text:'累積進球數',color:'#8b949e'}}}}
+  });
+
+  // ② 進球時間分布
+  var buckets = [[0,10],[10,20],[20,30],[30,40],[40,999]];
+  var labels = ['0-9 分','10-19 分','20-29 分','30-39 分','40 分以上'];
+  function hist(who){
+    var a=[0,0,0,0,0];
+    DATA.filter(function(m){return m.who===who;}).forEach(function(m){
+      m.goals.forEach(function(g){
+        var mn = g[1]/60;
+        for(var i=0;i<buckets.length;i++){ if(mn>=buckets[i][0] && mn<buckets[i][1]){ a[i]++; break; } }
+      });
+    });
+    return a;
+  }
+  new Chart(document.getElementById('ch2'), {
+    type:'bar',
+    data:{labels:labels, datasets:[
+      {label:'Edward', data:hist('Edward'), backgroundColor:CH.Edward},
+      {label:'Andrew', data:hist('Andrew'), backgroundColor:CH.Andrew}
+    ]},
+    options:{maintainAspectRatio:false, plugins:{legend:{labels:{boxWidth:12}}},
+      scales:{x:{grid:grid, ticks:tick}, y:{grid:grid, ticks:tick, beginAtZero:true, title:{display:true,text:'進球數',color:'#8b949e'}}}}
+  });
+
+  // ③ 各賽事場次
+  function tournCount(who){
+    var c={};
+    DATA.filter(function(m){return m.who===who;}).forEach(function(m){ var k=m.tourn||'其他'; c[k]=(c[k]||0)+1; });
+    return c;
+  }
+  var tE=tournCount('Edward'), tA=tournCount('Andrew');
+  var tkeys = Array.from(new Set(Object.keys(tE).concat(Object.keys(tA))));
+  tkeys.sort(function(a,b){ return ((tE[b]||0)+(tA[b]||0)) - ((tE[a]||0)+(tA[a]||0)); });
+  tkeys = tkeys.slice(0,8);
+  new Chart(document.getElementById('ch3'), {
+    type:'bar',
+    data:{labels:tkeys.map(function(k){return k.length>16?k.slice(0,16)+'…':k;}), datasets:[
+      {label:'Edward', data:tkeys.map(function(k){return tE[k]||0;}), backgroundColor:CH.Edward},
+      {label:'Andrew', data:tkeys.map(function(k){return tA[k]||0;}), backgroundColor:CH.Andrew}
+    ]},
+    options:{indexAxis:'y', maintainAspectRatio:false, plugins:{legend:{labels:{boxWidth:12}},
+      tooltip:{callbacks:{title:function(it){return tkeys[it[0].dataIndex];}}}},
+      scales:{x:{grid:grid, ticks:tick, beginAtZero:true, ticks:tick}, y:{grid:grid, ticks:Object.assign({font:{size:10}},tick)}}}
+  });
+
+  // ④ 每球季進球
+  function season(d){ var y=+d.slice(0,4), m=+d.slice(5,7); return m>=9 ? y+'-'+(y+1-2000) : (y-1)+'-'+y.toString().slice(2); }
+  var sE={}, sA={};
+  DATA.forEach(function(m){ var k=season(m.date); if(m.who==='Edward') sE[k]=(sE[k]||0)+m.n; else sA[k]=(sA[k]||0)+m.n; });
+  var skeys = Array.from(new Set(Object.keys(sE).concat(Object.keys(sA)))).sort();
+  new Chart(document.getElementById('ch4'), {
+    type:'bar',
+    data:{labels:skeys.map(function(k){return k+' 球季';}), datasets:[
+      {label:'Edward', data:skeys.map(function(k){return sE[k]||0;}), backgroundColor:CH.Edward},
+      {label:'Andrew', data:skeys.map(function(k){return sA[k]||0;}), backgroundColor:CH.Andrew}
+    ]},
+    options:{maintainAspectRatio:false, plugins:{legend:{labels:{boxWidth:12}}},
+      scales:{x:{grid:grid, ticks:tick}, y:{grid:grid, ticks:tick, beginAtZero:true, title:{display:true,text:'進球數',color:'#8b949e'}}}}
+  });
+
+  document.getElementById('caveat').innerHTML =
+    '⚠️ 目前統計只含「有進球」的場次(' + DATA.length + ' 場),所以「場次」類數據會偏低。'
+    + '把全部出賽(含 0 進球)納入後,場次統計才會完整 —— 需要的話我可以擴充。'
+    + '另外「地點/開賽時間」目前資料庫幾乎沒有,補齊後可以再加地點分布與時段勝率。';
+})();
+</script>
+<script>
+(function(){
+  var H="b6c76afc9374390004c2998480613a0fd5d17f12554d529589e8869e2988d047", site=document.getElementById('site'), gate=document.getElementById('gate');
+  function hex(b){return Array.prototype.map.call(new Uint8Array(b),function(x){return ('00'+x.toString(16)).slice(-2);}).join('');}
+  function show(){gate.style.display='none';site.hidden=false;}
+  async function go(){
+    var v=document.getElementById('pw').value, err=document.getElementById('err');
+    if(!v){err.textContent='請輸入密碼';return;}
+    try{
+      var d=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(v));
+      if(hex(d)===H){try{sessionStorage.setItem('fpgate','1');}catch(e){} show();}
+      else{err.textContent='密碼錯誤，請再試一次';document.getElementById('pw').value='';}
+    }catch(e){err.textContent='此瀏覽器不支援，請用 Chrome/Safari 開啟';}
+  }
+  try{if(sessionStorage.getItem('fpgate')==='1') show();}catch(e){}
+  document.getElementById('go').addEventListener('click',go);
+  document.getElementById('pw').addEventListener('keydown',function(e){if(e.key==='Enter')go();});
+  document.getElementById('pw').focus();
+})();
+</script>
+</body></html>
