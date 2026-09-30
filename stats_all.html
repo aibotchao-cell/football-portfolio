@@ -48,7 +48,7 @@ footer{padding:22px 18px;color:#6e7681;font-size:12px;text-align:center;border-t
 <div class="wrap"><canvas id="ch5"></canvas></div></div>
 
 <div class="card" id="c2"><h3>③ 進球時間分布</h3>
-<p>以「開球後第幾分鐘」統計,每 5 分鐘一格(曲線為趨勢,非精確值)。</p>
+<p>以「開球後第幾分鐘」統計,每 5 分鐘一格。</p>
 <div class="wrap"><canvas id="ch2"></canvas></div></div>
 
 <div class="card" id="c3"><h3>④ 每球季進球數</h3>
@@ -117,10 +117,10 @@ var DATA = [{"who": "Andrew", "date": "2024-09-01", "tourn": "AIA U8 天空豹U7
     });
     return a;
   }
-  new Chart(document.getElementById('ch2'), { type:'line',
+  new Chart(document.getElementById('ch2'), { type:'bar',
     data:{labels:labels, datasets:[
-      {label:'Edward', data:hist('Edward'), borderColor:CH.Edward, backgroundColor:CH.Edward+'22', tension:.35, fill:true, pointRadius:3},
-      {label:'Andrew', data:hist('Andrew'), borderColor:CH.Andrew, backgroundColor:CH.Andrew+'22', tension:.35, fill:true, pointRadius:3}
+      {label:'Edward', data:hist('Edward'), backgroundColor:CH.Edward},
+      {label:'Andrew', data:hist('Andrew'), backgroundColor:CH.Andrew}
     ]},
     options:{maintainAspectRatio:false, interaction:{mode:'index',intersect:false},
       plugins:{legend:{labels:{boxWidth:12}},
@@ -133,10 +133,10 @@ var DATA = [{"who": "Andrew", "date": "2024-09-01", "tourn": "AIA U8 天空豹U7
   var sE={}, sA={};
   DATA.forEach(function(m){ var k=season(m.date); if(m.who==='Edward') sE[k]=(sE[k]||0)+m.n; else sA[k]=(sA[k]||0)+m.n; });
   var skeys = Array.from(new Set(Object.keys(sE).concat(Object.keys(sA)))).sort();
-  new Chart(document.getElementById('ch3'), { type:'line',
+  new Chart(document.getElementById('ch3'), { type:'bar',
     data:{labels:skeys.map(function(k){return k+' 球季';}), datasets:[
-      {label:'Edward', data:skeys.map(function(k){return sE[k]||0;}), borderColor:CH.Edward, backgroundColor:CH.Edward+'22', tension:.35, fill:true, pointRadius:4},
-      {label:'Andrew', data:skeys.map(function(k){return sA[k]||0;}), borderColor:CH.Andrew, backgroundColor:CH.Andrew+'22', tension:.35, fill:true, pointRadius:4}
+      {label:'Edward', data:skeys.map(function(k){return sE[k]||0;}), backgroundColor:CH.Edward},
+      {label:'Andrew', data:skeys.map(function(k){return sA[k]||0;}), backgroundColor:CH.Andrew}
     ]},
     options:{maintainAspectRatio:false, interaction:{mode:'index',intersect:false},
       plugins:{legend:{labels:{boxWidth:12}}},
