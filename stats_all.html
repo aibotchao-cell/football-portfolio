@@ -35,14 +35,12 @@ footer{padding:22px 18px;color:#6e7681;font-size:12px;text-align:center;border-t
 <nav class="top"><a href="index.html">📑 比賽成果</a><a href="#c1">累積進球</a><a href="#c5">累積出賽</a><a href="#c2">進球時間</a><a href="#c3">每季進球</a><a href="#c4">賽事場次</a></nav>
 <main>
 <div class="summary">
-  <div class="kpi"><b>167</b><span>總場次</span></div>
-  <div class="kpi"><b>31</b><span>總進球數</span></div>
   <div class="kpi"><b>103 / 64</b><span>Edward / Andrew 場次</span></div>
   <div class="kpi"><b>15 / 16</b><span>Edward / Andrew 進球</span></div>
 </div>
 
 <div class="card" id="c1"><h3>① 累積進球數 vs 時間</h3>
-<p>點圖例可只看某一人;滑過顯示當日與累積數。</p>
+<p>兩人各自累積;點圖例可開關,滑過顯示當日與累積數。</p>
 <div class="wrap"><canvas id="ch1"></canvas></div></div>
 
 <div class="card" id="c5"><h3>② 累積出賽場次 vs 時間</h3>
@@ -96,8 +94,7 @@ var DATA = [{"who": "Andrew", "date": "2024-09-01", "tourn": "AIA U8 天空豹U7
   new Chart(document.getElementById('ch1'), { type:'line',
     data:{labels:dates, datasets:[
       {label:'Edward 累積進球', data:cumWho('Edward','n'), borderColor:CH.Edward, backgroundColor:CH.Edward+'22', tension:.25, fill:false, pointRadius:2},
-      {label:'Andrew 累積進球', data:cumWho('Andrew','n'), borderColor:CH.Andrew, backgroundColor:CH.Andrew+'22', tension:.25, fill:false, pointRadius:2},
-      {label:'合計', data:cum('n'), borderColor:'#3fb950', borderDash:[6,4], tension:.25, pointRadius:0}
+      {label:'Andrew 累積進球', data:cumWho('Andrew','n'), borderColor:CH.Andrew, backgroundColor:CH.Andrew+'22', tension:.25, fill:false, pointRadius:2}
     ]}, options:lineOpt('累積進球數')});
 
   // ② 累積出賽
