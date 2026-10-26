@@ -36,10 +36,7 @@ main{max-width:1000px;margin:0 auto;padding:14px 14px 40px}
 #gate button{width:100%;margin-top:10px;background:#238636;border:0;color:#fff;font-size:15px;font-weight:700;padding:11px;border-radius:8px;cursor:pointer}
 #err{color:#f85149;min-height:20px;margin-top:8px}
 </style></head><body>
-<div id="gate"><div class="c"><div style="font-size:30px">🔒</div><h2>哈哈/吐吐 足球特輯</h2>
-<p>請輸入密碼</p><input id="pw" type="password" inputmode="numeric" autocomplete="off" placeholder="••••">
-<button id="go">進入</button><p id="err"></p></div></div>
-<div id="site" hidden>
+<div id="site">
 <header><h1>🖼 相簿</h1>
 <p>148 本相簿 · 3005 張照片　<a href="index.html">← 回比賽成果</a>　<a href="stats_all.html">📊 數據</a></p></header>
 <main><div class="alist" id="alist"></div></main>
@@ -123,25 +120,6 @@ var DATA = [{"s": "edward146", "d": "2026-10-17", "n": "YAMAHA-U12M 紅鷹 vs �
   }
   renderList(); route();
   window.__route = route;
-})();
-</script>
-<script>
-(function(){
-  var H="7ab949490e8124ea232a4a0c375762d13e6f401e2463cbe14a58aa9e5578e35d", site=document.getElementById('site'), gate=document.getElementById('gate');
-  function hex(b){return Array.prototype.map.call(new Uint8Array(b),function(x){return ('00'+x.toString(16)).slice(-2);}).join('');}
-  function showSite(){gate.style.display='none';site.hidden=false;}
-  async function go(){
-    var v=document.getElementById('pw').value, err=document.getElementById('err');
-    if(!v){err.textContent='請輸入密碼';return;}
-    try{ var d=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(v));
-      if(hex(d)===H){try{sessionStorage.setItem('fpgate','1');}catch(e){} showSite();}
-      else{err.textContent='密碼錯誤，請再試一次';document.getElementById('pw').value='';}
-    }catch(e){err.textContent='此瀏覽器不支援，請用 Chrome/Safari 開啟';}
-  }
-  try{if(sessionStorage.getItem('fpgate')==='1') showSite();}catch(e){}
-  document.getElementById('go').addEventListener('click',go);
-  document.getElementById('pw').addEventListener('keydown',function(e){if(e.key==='Enter')go();});
-  document.getElementById('pw').focus();
 })();
 </script>
 </body></html>
