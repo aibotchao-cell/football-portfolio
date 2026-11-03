@@ -1,0 +1,65 @@
+<!DOCTYPE html><html lang="zh-Hant"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>賽程 | 哈哈/吐吐 足球特輯</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#0d1117;color:#e6edf3;
+     font-family:-apple-system,"Segoe UI","Microsoft JhengHei",sans-serif;line-height:1.6}
+header{padding:18px 16px 12px;background:linear-gradient(135deg,#1f6feb22,#3fb95022);
+       border-bottom:1px solid #21262d;position:sticky;top:0;z-index:10}
+header h1{margin:0;font-size:19px}
+header p{margin:5px 0 0;color:#8b949e;font-size:12.5px}
+header a{color:#58a6ff;text-decoration:none;font-size:13px;margin-right:14px}
+main{max-width:1100px;margin:0 auto;padding:14px 12px 46px}
+.poster{border:1px solid #21262d;border-radius:12px;overflow:hidden;background:#0b0f16}
+.poster img{display:block;width:100%;height:auto;cursor:zoom-in}
+.fact{background:#0f141b;border:1px solid #21262d;border-radius:12px;padding:14px 16px;margin:14px 0;font-size:13.5px}
+.fact h3{margin:0 0 8px;font-size:14.5px;color:#c9d1d9}
+.row{display:flex;gap:10px;padding:6px 0;border-bottom:1px solid #1b222b;font-size:13px;flex-wrap:wrap}
+.row:last-child{border-bottom:0}
+.row .k{flex:0 0 92px;color:#8b949e}
+.row .v{flex:1 1 200px}
+.hi{color:#7ee787;font-weight:700}
+.warn{color:#d29922}
+footer{padding:20px 16px;color:#6e7681;font-size:11.5px;text-align:center;border-top:1px solid #21262d}
+#zoom{position:fixed;inset:0;background:#000000f0;display:none;z-index:99;overflow:auto;padding:8px}
+#zoom.on{display:block}
+#zoom img{width:100%;height:auto;max-width:none}
+#zoom .x{position:fixed;right:14px;top:12px;background:#161b22;border:1px solid #30363d;color:#e6edf3;
+        border-radius:8px;padding:8px 14px;font-size:14px;cursor:pointer}
+</style></head><body>
+<header><h1>📅 2026 全國學童盃・北區預賽 賽程</h1>
+<p><a href="index.html">← 比賽成果</a><a href="album.html">🖼 相簿</a><a href="stats_all.html">📊 數據</a></p></header>
+<main>
+  <div class="poster"><img id="poster" src="ctfa2026_bracket.png?v=1" alt="2026 全國學童盃北區預賽 兄弟晉級路線圖（點擊放大）"></div>
+
+  <div class="fact">
+    <h3>① 品衡（LS 紅鷹）U12・J 組</h3>
+    <div class="row"><span class="k">11/7（六）</span><span class="v">09:30　場次(二十)　三石訓練 vs <span class="hi">紅鷹</span>　·　淡水文中五足球場</span></div>
+    <div class="row"><span class="k">11/8（日）</span><span class="v">14:30　場次(三十)　Esperzo FC U12 vs <span class="hi">紅鷹</span>　·　淡水文中五足球場</span></div>
+    <div class="row"><span class="k">晉級</span><span class="v">三隊取前二；分組第一走 A2 路線、第二走 E1 路線</span></div>
+  </div>
+
+  <div class="fact">
+    <h3>② 品安（LS 紅豹）U10・L 組</h3>
+    <div class="row"><span class="k">11/7（六）</span><span class="v">10:30　場次(十三)　<span class="hi">紅豹</span> vs 銀河射手U10星辰　·　桃園市立田徑場</span></div>
+    <div class="row"><span class="k">11/8（日）</span><span class="v">10:30　場次(四十三)　新屋足球俱樂部 vs <span class="hi">紅豹</span>　·　桃園市立田徑場</span></div>
+    <div class="row"><span class="k">晉級</span><span class="v">三隊取前二；分組第一走 J2 路線、第二走 H1 路線</span></div>
+  </div>
+
+  <div class="fact">
+    <h3>③ 淘汰賽</h3>
+    <div class="row"><span class="k">11/14–11/15</span><span class="v">紅鷹：淡水文中五　·　紅豹：雙連坡足球場</span></div>
+    <div class="row"><span class="k">11/21–11/22</span><span class="v">兩組都在 <b>桃園市立田徑場</b>（決賽 11/22：U12 15:30、U10 13:30）</span></div>
+    <div class="row"><span class="k">提醒</span><span class="v warn">官方註明「八強以後場次請留意更新」，時間場地仍可能調整</span></div>
+  </div>
+</main>
+<div id="zoom"><button class="x" onclick="document.getElementById('zoom').classList.remove('on')">✕ 關閉</button><img id="zimg" alt=""></div>
+<footer>依 CTFA《2026 全國學童盃足球錦標賽－北區預賽賽程 V4》繪製　·　點圖可放大、雙指縮放</footer>
+<script>
+document.getElementById('poster').addEventListener('click', function(){
+  document.getElementById('zimg').src = this.src;
+  document.getElementById('zoom').classList.add('on');
+});
+</script>
+</body></html>
