@@ -88,6 +88,7 @@ DATA.sort(function(a,b){ return String(b.d||'').localeCompare(String(a.d||'')); 
     viewer.classList.add('on'); show(); return true;
   }
   function close(){
+    if(BACK){ location.href = BACK; return; }          // 從比賽卡片進來 → 回到原本那一場
     viewer.classList.remove('on'); cur = null;
     try{ history.replaceState(null,'','#'); }catch(e){}
   }
