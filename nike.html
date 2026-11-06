@@ -63,7 +63,12 @@ h1 em{font-style:normal;color:var(--volt)}
 .card .ph::after{content:"";position:absolute;inset:0;
   background:linear-gradient(180deg,rgba(0,0,0,.05) 30%,rgba(0,0,0,.88) 100%)}
 .card.flat .ph{background:
-  radial-gradient(circle at 78% 18%,rgba(216,255,0,.16),transparent 58%),#101010}
+  repeating-linear-gradient(118deg,rgba(255,255,255,.045) 0 1px,transparent 1px 14px),
+  radial-gradient(circle at 82% 12%,rgba(216,255,0,.20),transparent 62%),#0d0d0d}
+.card.flat .wm{position:absolute;right:-6px;top:34%;font-size:clamp(70px,16vw,150px);
+  font-weight:900;letter-spacing:-.06em;line-height:.8;color:rgba(255,255,255,.055);z-index:1}
+.card.flat .noph{position:absolute;left:14px;top:46px;z-index:2;font-size:9.5px;letter-spacing:.24em;
+  text-transform:uppercase;color:#7c7c7c;border:1px solid #2b2b2b;padding:4px 8px}
 .card .id{position:absolute;top:14px;left:14px;z-index:2;font-size:10.5px;font-weight:800;
   letter-spacing:.22em;padding:5px 9px;background:#0a0a0acc;border:1px solid #ffffff26;backdrop-filter:blur(6px)}
 .card .who{position:absolute;top:14px;right:14px;z-index:2;font-size:10.5px;font-weight:800;
@@ -169,6 +174,7 @@ M.forEach((m, i) => {
   el.href = 'album.html?' + encodeURIComponent('back=nike.html') + '#' + m.slug;
   el.innerHTML = `
     <div class="ph">${m.cover ? `<img loading="lazy" src="${m.cover}" alt="${m.title}">` : ''}</div>
+    ${m.cover ? '' : `<div class="wm">${m.id}</div><div class="noph">Photos pending</div>`}
     <div class="id">${m.id}</div>
     <div class="who">${who}</div>
     <div class="body">
