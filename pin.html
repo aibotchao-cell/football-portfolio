@@ -118,11 +118,10 @@ function render(){
   grid.innerHTML = list.map(p => `
     <a class="pin" href="album.html?back=pin.html#${p.s}">
       <img loading="lazy" src="${p.img}" alt="${p.t}">
-      <span class="badge">${whoName(p.w)}</span>
       <span class="more">···</span>
       <div class="cap">
         <div class="ttl">${p.t}</div>
-        <div class="meta">${p.d}<span class="dot"></span>${p.t.split(' ')[0]}</div>
+        <div class="meta">${whoName(p.w)}<span class="dot"></span>${p.d}</div>
       </div>
     </a>`).join('');
 }
