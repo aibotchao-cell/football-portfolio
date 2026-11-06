@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>LS FOOTBALL — 品衡 · 品安</title>
+<style>
+:root{
+  --ink:#0a0a0a; --paper:#f5f5f5; --volt:#d8ff00; --line:#1e1e1e; --mute:#8a8a8a;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  background:var(--ink); color:var(--paper);
+  font-family:"Helvetica Neue",Inter,"Microsoft JhengHei",-apple-system,sans-serif;
+  -webkit-font-smoothing:antialiased; overflow-x:hidden;
+}
+a{color:inherit;text-decoration:none}
+img{display:block;width:100%;height:100%;object-fit:cover}
+
+/* ---------- top bar ---------- */
+.top{
+  position:fixed;inset:0 0 auto 0;z-index:50;display:flex;align-items:center;
+  justify-content:space-between;padding:14px 20px;
+  background:rgba(10,10,10,.72);backdrop-filter:blur(14px);
+  border-bottom:1px solid rgba(255,255,255,.07);
+}
+.mark{font-size:13px;font-weight:900;letter-spacing:.28em;text-transform:uppercase}
+.mark span{color:var(--volt)}
+.top nav{display:flex;gap:18px;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:#bdbdbd}
+.top nav a:hover{color:var(--volt)}
+
+/* ---------- hero ---------- */
+.hero{position:relative;min-height:88vh;display:flex;align-items:flex-end;overflow:hidden}
+.hero .bg{position:absolute;inset:0;filter:grayscale(.15) contrast(1.08)}
+.hero .bg::after{content:"";position:absolute;inset:0;
+  background:linear-gradient(180deg,rgba(10,10,10,.55) 0%,rgba(10,10,10,.15) 38%,rgba(10,10,10,.94) 92%)}
+.hero .inner{position:relative;padding:0 20px 46px;width:100%}
+.kicker{font-size:11px;letter-spacing:.32em;text-transform:uppercase;color:var(--volt);margin-bottom:14px}
+h1{font-size:clamp(46px,13vw,148px);line-height:.86;font-weight:900;letter-spacing:-.045em;text-transform:uppercase}
+h1 em{font-style:normal;color:var(--volt)}
+.hero .sub{margin-top:18px;font-size:13px;letter-spacing:.06em;color:#cfcfcf;max-width:36ch;line-height:1.7}
+
+/* ---------- marquee ---------- */
+.marquee{border-top:1px solid var(--line);border-bottom:1px solid var(--line);
+  background:var(--volt);color:#0a0a0a;overflow:hidden;white-space:nowrap}
+.marquee div{display:inline-block;padding:9px 0;font-size:11.5px;font-weight:800;
+  letter-spacing:.26em;text-transform:uppercase;animation:slide 26s linear infinite}
+@keyframes slide{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+/* ---------- section head ---------- */
+.sec{padding:54px 20px 8px;max-width:1280px;margin:0 auto}
+.sec h2{font-size:clamp(26px,5.6vw,58px);line-height:.92;font-weight:900;letter-spacing:-.04em;text-transform:uppercase}
+.sec .lede{margin-top:12px;font-size:12.5px;color:var(--mute);letter-spacing:.05em}
+
+/* ---------- grid ---------- */
+.grid{display:grid;grid-template-columns:1fr;gap:14px;padding:22px 20px 10px;max-width:1280px;margin:0 auto}
+@media(min-width:760px){.grid{grid-template-columns:1fr 1fr;gap:18px}}
+.card{position:relative;overflow:hidden;background:#111;aspect-ratio:4/5;border:1px solid var(--line)}
+@media(min-width:760px){.card.wide{grid-column:span 2;aspect-ratio:16/9}}
+.card .ph{position:absolute;inset:0;transition:transform .9s cubic-bezier(.2,.8,.2,1),filter .5s}
+.card:hover .ph{transform:scale(1.045);filter:contrast(1.1)}
+.card .ph::after{content:"";position:absolute;inset:0;
+  background:linear-gradient(180deg,rgba(0,0,0,.05) 30%,rgba(0,0,0,.88) 100%)}
+.card.flat .ph{background:
+  radial-gradient(circle at 78% 18%,rgba(216,255,0,.16),transparent 58%),#101010}
+.card .id{position:absolute;top:14px;left:14px;z-index:2;font-size:10.5px;font-weight:800;
+  letter-spacing:.22em;padding:5px 9px;background:#0a0a0acc;border:1px solid #ffffff26;backdrop-filter:blur(6px)}
+.card .who{position:absolute;top:14px;right:14px;z-index:2;font-size:10.5px;font-weight:800;
+  letter-spacing:.18em;padding:5px 9px;background:var(--volt);color:#0a0a0a}
+.card .body{position:absolute;inset:auto 0 0 0;z-index:2;padding:16px}
+.card .score{font-size:clamp(34px,7vw,62px);font-weight:900;letter-spacing:-.05em;line-height:1;color:var(--volt)}
+.card .teams{margin-top:6px;font-size:14.5px;font-weight:700;letter-spacing:.01em;line-height:1.35}
+.card .meta{margin-top:8px;font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:#9a9a9a}
+.card .go{margin-top:12px;display:inline-block;font-size:10.5px;font-weight:900;letter-spacing:.2em;
+  text-transform:uppercase;border-bottom:2px solid var(--volt);padding-bottom:3px}
+
+/* ---------- numbers ---------- */
+.nums{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line);
+  margin:56px 0 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+@media(min-width:760px){.nums{grid-template-columns:repeat(4,1fr)}}
+.nums div{background:var(--ink);padding:26px 20px}
+.nums b{display:block;font-size:clamp(34px,8vw,64px);font-weight:900;letter-spacing:-.05em;line-height:.9}
+.nums span{display:block;margin-top:8px;font-size:10.5px;letter-spacing:.24em;
+  text-transform:uppercase;color:var(--mute)}
+
+/* ---------- cta ---------- */
+.cta{padding:70px 20px 90px;text-align:center}
+.cta a{font-size:clamp(22px,5vw,40px);font-weight:900;letter-spacing:-.03em;text-transform:uppercase;
+  border-bottom:3px solid var(--volt);padding-bottom:6px}
+.cta p{margin-top:18px;font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--mute)}
+footer{padding:26px 20px 40px;border-top:1px solid var(--line);
+  display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;
+  font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:#6b6b6b}
+
+.reveal{opacity:0;transform:translateY(22px);transition:opacity .8s ease,transform .8s cubic-bezier(.2,.8,.2,1)}
+.reveal.in{opacity:1;transform:none}
+</style>
+</head>
+<body>
+
+<div class="top">
+  <div class="mark">LS<span>/</span>FOOTBALL</div>
+  <nav>
+    <a href="#recent">Recent</a>
+    <a href="album.html">Album</a>
+    <a href="index.html">Archive</a>
+  </nav>
+</div>
+
+<header class="hero">
+  <div class="bg"><img id="heroimg" src="" alt=""></div>
+  <div class="inner">
+    <div class="kicker">2026 Season · U12 / U10</div>
+    <h1>品衡<em>×</em>品安<br>FOOTBALL</h1>
+    <p class="sub">兩兄弟的比賽影像檔案。最新十場精選，每一場都有比分、照片與相簿。</p>
+  </div>
+</header>
+
+<div class="marquee"><div id="mq"></div></div>
+
+<section class="sec" id="recent">
+  <h2>Latest<br>Matches</h2>
+  <p class="lede">最近 10 場 · 依日期排序 · 點擊看相簿</p>
+</section>
+
+<main class="grid" id="grid"></main>
+
+<section class="nums">
+  <div><b>164</b><span>場比賽</span></div>
+  <div><b>3,088</b><span>張照片</span></div>
+  <div><b>30</b><span>進球</span></div>
+  <div><b>148</b><span>本相簿</span></div>
+</section>
+
+<section class="cta">
+  <a href="index.html">看全部 164 場 →</a>
+  <p>LS 紅鷹 · LS 紅豹</p>
+</section>
+
+<footer>
+  <span>© 2026 LS Football Archive</span>
+  <span>品衡 E101 · 品安 A063</span>
+</footer>
+
+<script>
+const M = [{"id": "E101", "who": "Edward", "date": "2026-11-01", "title": "勝利聯賽U12-D 紅鷹 vs 樂活鷹", "team": "紅鷹", "score": "2:1", "cover": "img/edward150/006.jpg?v=48ba0a39", "goals": 0, "photos": 17, "slug": "edward150"}, {"id": "A063", "who": "Andrew", "date": "2026-11-01", "title": "紅豹 vs BSFLC", "team": "紅豹", "score": "0:2", "cover": "", "goals": 0, "photos": 0, "slug": "andrew115"}, {"id": "A062", "who": "Andrew", "date": "2026-10-31", "title": "新北八人U10-1 紅豹 vs Taipei Playone U10", "team": "紅豹", "score": "4:0", "cover": "img/andrew112/001.jpg?v=3a892cb2", "goals": 2, "photos": 28, "slug": "andrew112"}, {"id": "E100", "who": "Edward", "date": "2026-10-26", "title": "友誼賽 LS 紅鷹 vs 蘆洲國小", "team": "紅鷹", "score": "9:9", "cover": "", "goals": 0, "photos": 0, "slug": "edward140"}, {"id": "A061", "who": "Andrew", "date": "2026-10-25", "title": "勝利聯賽U10D 紅豹 vs PLC FA U10", "team": "紅豹", "score": "2:2", "cover": "img/andrew098/001.jpg?v=5fbc51c6", "goals": 0, "photos": 30, "slug": "andrew098"}, {"id": "A060", "who": "Andrew", "date": "2026-10-25", "title": "勝利聯賽U10D 紅豹 vs EsperzoFC", "team": "紅豹", "score": "9:1", "cover": "", "goals": 0, "photos": 0, "slug": "andrew097"}, {"id": "A059", "who": "Andrew", "date": "2026-10-18", "title": "勝利聯賽U10D 紅豹 vs ZYES", "team": "紅豹", "score": "3:1", "cover": "img/andrew099/001.jpg?v=84353923", "goals": 0, "photos": 12, "slug": "andrew099"}, {"id": "E098", "who": "Edward", "date": "2026-10-17", "title": "YAMAHA-U12M 紅鷹 vs 天母國小白", "team": "紅鷹", "score": "7:0", "cover": "img/edward146/026.jpg?v=4dd39028", "goals": 0, "photos": 33, "slug": "edward146"}, {"id": "E097", "who": "Edward", "date": "2026-10-17", "title": "YAMAHA-U12M 紅鷹 vs TFA", "team": "紅鷹", "score": "0:0", "cover": "img/edward147/011.jpg?v=36f4ebf4", "goals": 0, "photos": 11, "slug": "edward147"}, {"id": "E099", "who": "Edward", "date": "2026-10-17", "title": "新北八人-LS (對手棄賽) 紅鷹 vs 銀河射手", "team": "紅鷹", "score": "4:2", "cover": "", "goals": 0, "photos": 0, "slug": "edward148"}];
+
+/* hero 用第一張有圖的 */
+const first = M.find(x => x.cover) || M[0];
+document.getElementById('heroimg').src = first.cover || '';
+
+/* marquee */
+const words = ['U12 LS 紅鷹','U10 LS 紅豹','勝利聯賽','YAMAHA CUP','學童盃','新北八人','友誼賽'];
+const seq = words.join('  ✦  ') + '  ✦  ';
+document.getElementById('mq').textContent = seq + seq;
+
+/* 卡片 */
+const grid = document.getElementById('grid');
+M.forEach((m, i) => {
+  const wide = (i === 0 || i === 5) ? ' wide' : '';
+  const flat = m.cover ? '' : ' flat';
+  const who = m.who === 'Edward' ? '品衡' : '品安';
+  const score = m.score || '—';
+  const el = document.createElement('a');
+  el.className = 'card reveal' + wide + flat;
+  el.href = 'album.html?' + encodeURIComponent('back=nike.html') + '#' + m.slug;
+  el.innerHTML = `
+    <div class="ph">${m.cover ? `<img loading="lazy" src="${m.cover}" alt="${m.title}">` : ''}</div>
+    <div class="id">${m.id}</div>
+    <div class="who">${who}</div>
+    <div class="body">
+      <div class="score">${score}</div>
+      <div class="teams">${m.title}</div>
+      <div class="meta">${m.date} · ${m.photos} 張${m.goals ? ' · ' + m.goals + ' 球' : ''}</div>
+      <span class="go">View album</span>
+    </div>`;
+  grid.appendChild(el);
+});
+
+/* 進場動畫 */
+const io = new IntersectionObserver(es => {
+  es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+}, { threshold: .12 });
+document.querySelectorAll('.reveal').forEach((el, i) => {
+  el.style.transitionDelay = (i % 4) * 70 + 'ms';
+  io.observe(el);
+});
+</script>
+</body>
+</html>
